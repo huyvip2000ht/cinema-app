@@ -29,10 +29,10 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
     false,false,false
   ];
   List<CinemaIndex> _cinemaIndex = <CinemaIndex>[
-    CinemaIndex("BHD Star The Garden","tang 4, 5 ..dsdd...HN","../images/image.jpg","HN"),
-    CinemaIndex("BHD Stardasdasd The Garden","tang 4, 5 ..sadasdasd...HCM","../images/image.jpg","HCM"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","../images/image.jpg","Hue"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HN","../images/image.jpg","HN"),
+    CinemaIndex("BHD Star The Garden","tang 4, 5 ..dsdd...HN","assets/image/image.jpg","HN"),
+    CinemaIndex("BHD Stardasdasd The Garden","tang 4, 5 ..sadasdasd...HCM","assets/image/image.jpg","HCM"),
+    CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","assets/image/image.jpg","Hue"),
+    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HN","assets/image/image.jpg","HN"),
     CinemaIndex("BHD Star The Garden","tang 4, 5 .....HCM","../images/image.jpg","HCM"),
     CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","../images/image.jpg","Hue"),
     CinemaIndex("BHD Star The Garden","tang 4, 5 .....HN","../images/image.jpg","HN"),
@@ -40,34 +40,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
     CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","../images/image.jpg","Hue"),
 
   ];
-  /*final List<Map<String, dynamic>> _genders = [
-    {
-      'value': 'All',
-      'label': 'All',
 
-    },
-    {
-      'value': 'Atmos',
-      'label': 'Atmos',
-
-    },
-    {
-      'value': 'First Class',
-      'label': 'First Class',
-    },
-    {
-      'value': 'Deluxe',
-      'label': 'Deluxe',
-    },
-    {
-      'value': 'Kids',
-      'label': 'Kids',
-    },
-    {
-      'value': 'Onyx',
-      'label': 'Onyx',
-    },
-  ];*/
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
@@ -137,23 +110,10 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                       ),
                     )
                 ),
-                /*Container(
-              child: Row(
-                children:[
-                  Text("Screen"),
-                  RoundedSelectField(
-                    hintText: "5 types",
-                    items: _genders,
-                  ),
-                ],
-              )
-            ),*/
+
                 Container(
-
                     child: Row(
-
                       children: [
-
                         SquareButton(
                           text: "Ho Chi Minh",
                           color: _hasBeenPressed[0] ? Colors.lightGreen : Colors
@@ -163,19 +123,13 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                             setState(() {
                               for(var i=0;i<_hasBeenPressed.length;i++){
                                 _hasBeenPressed[i]=false;
-
                               }
-
                               _hasBeenPressed[0] = true;
                               print(_hasBeenPressed.toString());
 
                               _addPressed("HCM");
                             })
-
-
                           },
-
-
                           width: size.width * 0.3,
                         ),
                         SquareButton(
@@ -187,15 +141,11 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                             setState(() {
                               for(var i=0;i<_hasBeenPressed.length;i++){
                                 _hasBeenPressed[i]=false;
-
                               }
-
                               _hasBeenPressed[1] = true;
                               print(_hasBeenPressed.toString());
                               _addPressed("HN");
                             })
-
-
                           },
                           width: size.width * 0.3,
                         ),
@@ -213,8 +163,6 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                               print(_hasBeenPressed.toString());
                               _addPressed("Hue");
                             })
-
-
                           },
                           width: size.width * 0.25,
                         ),
@@ -223,10 +171,8 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                 ),
 
                 Container(
-
-                    height: size.height * 0.7,
+                    height: size.height * 0.65,
                     child: SingleChildScrollView(
-
                         child:
                           MyList(_cinemaIndex,_cinemaFilter)
                     )

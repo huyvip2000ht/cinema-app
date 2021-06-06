@@ -31,7 +31,7 @@ class _SignUpScreen extends State<SignUpScreen> {
         children: [
           new Body(),
           //  new Container(height: 40.0, color: Colors.red),
-          new Footer(),
+         // new Footer(),
         ],
       ),
     );

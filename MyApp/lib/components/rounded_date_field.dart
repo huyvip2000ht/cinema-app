@@ -8,7 +8,8 @@ class RoundedDateField extends StatelessWidget {
   final IconData icon;
   final ValueChanged<String> onChanged;
   final ValueChanged<String> onPressed;
-  final  txt = TextEditingController();
+
+  TextEditingController controller = new TextEditingController();
 
   RoundedDateField({
     Key key,
@@ -16,6 +17,7 @@ class RoundedDateField extends StatelessWidget {
     this.icon = Icons.calendar_today_rounded,
     this.onChanged,
     this.onPressed,
+    this.controller
 
   }) : super(key: key);
 
@@ -23,7 +25,7 @@ class RoundedDateField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
-        controller: txt,
+        controller: controller,
         onChanged: onChanged,
         readOnly: true,
         onTap: (){
@@ -33,7 +35,7 @@ class RoundedDateField extends StatelessWidget {
               maxTime: DateTime(2030,1,1), onChanged: (date) {
                 print('change $date');
               }, onConfirm: (date) {
-                txt.text = date.day.toString()+"/"+date.month.toString()+"/"+date.year.toString();
+                controller.text = date.day.toString()+"/"+date.month.toString()+"/"+date.year.toString();
               }, currentTime: DateTime.now(), locale: LocaleType.vi);
         } ,
         cursorColor: kPrimaryColor,

@@ -35,8 +35,14 @@ class _CinemaIndexState extends State<CinemaIndex> {
     Size size = MediaQuery
         .of(context)
         .size;
-
-
+   // return  Image(image: AssetImage("../assets/image/image.jpg"));
+//print(" cas" + widget.cinemaImage);
+    /*return Image.asset(
+      'assets/image/image.jpg',
+      width: 600.0,
+      height: 240.0,
+      fit: BoxFit.cover,
+    );*/
     return
                 InkWell(
                   onTap:() {
@@ -59,13 +65,20 @@ class _CinemaIndexState extends State<CinemaIndex> {
                       children: <Widget>[
                         Expanded(
                             flex: 2,
-
                             child:
-                                ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    child: Image(image: AssetImage(widget.cinemaImage)),
-                                )
+                                Container(
+                                    height: 100,
+                                    child:ClipRRect(
 
+                                    //  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      //child: Image(image: AssetImage(widget.cinemaImage)),
+                                      child: Image.asset(
+                                        widget.cinemaImage,
+
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                )
                         ),
                         Container(
                           width: 20,

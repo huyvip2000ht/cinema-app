@@ -34,15 +34,13 @@ class ShowTimesAppBar extends StatelessWidget implements PreferredSizeWidget {
                 icon: Icon(Icons.notifications),
                 onPressed: null,
               ),
-              //Container(height: 100,color: Colors.red,)
+
               Text("data")
             ]
         )
       ],
     );
   }
-
-
 
   @override
   Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);

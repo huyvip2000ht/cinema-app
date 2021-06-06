@@ -8,26 +8,28 @@ class RoundedSelectField extends StatelessWidget {
   final IconData icon;
   final ValueChanged<String> onChanged;
   final List<Map<String, dynamic>> items;
+  TextEditingController controller = new TextEditingController();
 
 
 
-  const RoundedSelectField({
+   RoundedSelectField({
     Key key,
     this.hintText,
     this.icon = Icons.person,
     this.onChanged,
-    this.items
+    this.items,
+    this.controller
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _oFormKey = GlobalKey<FormState>();
-    TextEditingController _controller;
+    //TextEditingController controller;
 
     return TextFieldContainer(
       child: SelectFormField(
         //type: SelectFormFieldType.dialog,
-        controller: _controller,
+        controller: controller,
         //initialValue: _initialValue,
         //icon: Icon(Icons.format_shapes),
         labelText: hintText,

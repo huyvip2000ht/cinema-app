@@ -34,14 +34,14 @@ class SquareButton extends StatelessWidget {
 
       ),
 
-      margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
       width: this.width,
       height: this.height,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: RaisedButton(
 
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           color: color,
           onPressed: press,
           child: Text(
