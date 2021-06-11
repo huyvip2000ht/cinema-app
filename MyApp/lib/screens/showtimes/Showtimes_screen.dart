@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_app/components/bottomNavbar.dart';
 import 'package:movie_ticket_app/components/rounded_button.dart';
@@ -10,9 +11,11 @@ import 'package:movie_ticket_app/constants.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/background_list_view.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/custom_appbar.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/movie_list_view.dart';
-import 'package:movie_ticket_app/screens/Showtimes/component/cinema_index.dart';
+import 'package:movie_ticket_app/screens/showtimes/component/cinema_index.dart';
 import 'package:movie_ticket_app/screens/Showtimes/component/showtimes_appbar.dart';
-
+import 'package:movie_ticket_app/firebase/getCinemas.dart';
+import 'package:wemapgl/wemapgl.dart';
+import 'component/test.dart';
 
 class ShowtimesScreen extends StatefulWidget {
   @override
@@ -20,32 +23,72 @@ class ShowtimesScreen extends StatefulWidget {
 }
 
 class _ShowtimesScreenState extends State<ShowtimesScreen> {
+  CollectionReference cinemas = FirebaseFirestore.instance.collection('cinemas');
 //  bool press = false;
   int _seconds = 1;
+  bool _isLoaded = false;
+  double _fakeLocationX = 105.810697;
+  double _fakeLocationY = 21.023506;
 
   String _cinemaFilter = "";
 
   List<bool>_hasBeenPressed =[
     false,false,false
   ];
-  List<CinemaIndex> _cinemaIndex = <CinemaIndex>[
-    CinemaIndex("BHD Star The Garden","tang 4, 5 ..dsdd...HN","assets/image/image.jpg","HN"),
-    CinemaIndex("BHD Stardasdasd The Garden","tang 4, 5 ..sadasdasd...HCM","assets/image/image.jpg","HCM"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","assets/image/image.jpg","Hue"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HN","assets/image/image.jpg","HN"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HCM","../images/image.jpg","HCM"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","../images/image.jpg","Hue"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HN","../images/image.jpg","HN"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....HCM","../images/image.jpg","HCM"),
-    CinemaIndex("BHD Star The Garden","tang 4, 5 .....Hue","../images/image.jpg","Hue"),
+ /* List<CinemaIndex> _cinemaIndex = <CinemaIndex>[
+    CinemaIndex("BHD Star The Garden",
+        "Tầng 4 & 5,TTTM The Garden, khu đô thị The Manor,đường Mễ trì, phường Mỹ Đình 1, quận Nam Từ Liêm,Hà Nội"
+        ,"assets/image/image.jpg"
+        ,"HN",105.776147, 21.013668),
+    CinemaIndex("BHD Star Discovery"
+        ,"Tầng 8,TTTM Discovery - 302 Cầu Giấy, Hà Nội"
+        ,"assets/image/image.jpg"
+        ,"HN",105.794171, 21.035412),
+    CinemaIndex("BHD Star Phạm Ngọc Thạch",
+        "Tầng 8 TTTM Vincom, số 2 Phạm Ngọc Thạch, Đống Đa, Hà Nội"
+        ,"assets/image/image.jpg"
+        ,"HN",105.831817, 21.006267),
+    CinemaIndex("BHD Star Quang Trung",
+        "Tầng B1&B2, TTTM Vincom, số 190 Quang Trung, Gò Vấp, Tp.HCM",
+        "assets/image/image.jpg"
+        ,"HCM",106.672095, 10.829458),
+    CinemaIndex("BHD Star Phạm Hùng"
+        ,"Lầu 4, TTTM Satra Phạm Hùng,C6/27 Phạm Hùng, Bình Chánh,Tp.HCM"
+        ,"../images/image.jpg"
+        ,"HCM",106.674722, 10.733611),
+    CinemaIndex("BHD Star 3.2"
+        ,"Lầu 5,Siêu thị Vincom 3/2,3C Đường 3/2,Quận 10, TPHCM"
+        ,"../images/image.jpg"
+        ,"HCM",106.680707, 10.776112),
+    CinemaIndex("BHD Star Bitexco"
+        ,"Lầu 3 & 4, TTTM ICON 68, 2 Hải Triều, Quận 1, TPHCM "
+        ,"../images/image.jpg"
+        ,"HCM",106.704522, 10.771743),
+    CinemaIndex("BHD Star Huế"
+        ,"Vincom Huế, 50A Hùng Vương tổ 10, Phú Nhuận, Thành phố Huế, Thừa Thiên Huế"
+        ,"../images/image.jpg"
+        ,"Hue",107.594586, 16.463207),
+  ];*/
+  List<CinemaIndex> _cinemaIndex=[];
 
-  ];
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
         .of(context)
         .size;
+    takeDataAndSort();
+
+
+
+
     return new MyInheritedWidget(
       secondsToDisplay: _seconds,
       child: Scaffold(
@@ -116,7 +159,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                       children: [
                         SquareButton(
                           text: "Ho Chi Minh",
-                          color: _hasBeenPressed[0] ? Colors.lightGreen : Colors
+                          color: _hasBeenPressed[0] ? kPrimaryColor : Colors
                               .black,
                           press: () =>
                           {
@@ -134,7 +177,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                         ),
                         SquareButton(
                           text: "Ha Noi",
-                          color: _hasBeenPressed[1] ? Colors.lightGreen : Colors
+                          color: _hasBeenPressed[1] ? kPrimaryColor : Colors
                               .black,
                           press: () =>
                           {
@@ -145,13 +188,14 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                               _hasBeenPressed[1] = true;
                               print(_hasBeenPressed.toString());
                               _addPressed("HN");
+
                             })
                           },
                           width: size.width * 0.3,
                         ),
                         SquareButton(
                           text: "Hue",
-                          color: _hasBeenPressed[2] ? Colors.lightGreen : Colors
+                          color: _hasBeenPressed[2] ? kPrimaryColor : Colors
                               .black,
                           press: () =>
                           {
@@ -162,6 +206,8 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                               _hasBeenPressed[2] = true;
                               print(_hasBeenPressed.toString());
                               _addPressed("Hue");
+
+
                             })
                           },
                           width: size.width * 0.25,
@@ -175,10 +221,13 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                     child: SingleChildScrollView(
                         child:
                           MyList(_cinemaIndex,_cinemaFilter)
+                            //UserInformation(),
                     )
-                )
+                ),
+
               ]
           ),
+         // child: UserInformation(),
         ),
         drawer: _buildDrawer(),
         //  bottomNavigationBar: BottomNavBar(2),
@@ -190,6 +239,46 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
     setState(() {
       _cinemaFilter = filter;
     });
+  }
+  Future<void> takeDataAndSort() async {
+    var collection = FirebaseFirestore.instance.collection('cinemas');
+    var querySnapshot = await collection.get();
+    if(_isLoaded == false){
+    setState(()  {
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data();
+
+      //  double distance = await getDistance(_fakeLocationX, _fakeLocationY, data['cinemaX'], data['cinemaY']);
+
+        _cinemaIndex.add(new CinemaIndex(doc.id,data['cinemaName'], data['cinemaAddress'],
+            data['cinemaImage'], data['cinemaCity'],
+            data['cinemaX'], data['cinemaY'],_fakeLocationX,_fakeLocationY));
+       // print(distance);
+        //  var fooValue = data['cinemaImage'];
+      }
+
+      _cinemaIndex.sort((a,b) => a.compareTo(b));
+
+
+      _isLoaded = true;
+    });
+    }
+
+  }
+  Future<double> getDistance(double fakeX,double fakeY,double cinemaX, double cinemaY) async{
+    List<LatLng> points = [];
+    WeMapDirections directionAPI = WeMapDirections();
+
+    points.add(LatLng(fakeY, fakeX)); //origin Point
+    // points.add(LatLng(21.024412, 105.798115)); //way Point
+    points.add(LatLng(cinemaY, cinemaX)); //destination Point
+    final json = await directionAPI.getResponseMultiRoute(
+        0, points); //0 = car, 1 = bike, 2 = foot
+    List<LatLng> _route = directionAPI.getRoute(json);
+    List<LatLng> _waypoins = directionAPI.getWayPoints(json);
+
+      return  directionAPI.getDistance(json).toDouble()  ;
+
   }
 
 }
@@ -303,35 +392,83 @@ Widget _buildDrawer() {
 
 
 // ignore: must_be_immutable
-class MyList extends StatelessWidget {
-  List<CinemaIndex> _cinemaIndex;
+class MyList extends StatefulWidget {
+  // List<CinemaIndex> _cinemaIndex = getCinema().getAllCinemas();
   String cinemaCityFilter;
+  List<CinemaIndex> _cinemaIndex; //getCinema().getAllCinemas() ;
 
+  MyList(this._cinemaIndex, this.cinemaCityFilter);
 
-  MyList(this._cinemaIndex,this.cinemaCityFilter);
-
+  @override
+  _MyListState createState() => _MyListState();
+}
+class _MyListState extends State<MyList>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
 
 
     final MyInheritedWidget inheritedWidget = MyInheritedWidget.of(context);
-    return Column(
+    final Stream<QuerySnapshot> _cinemaStream = FirebaseFirestore.instance.collection('cinemas').snapshots();
+
+
+
+
+    /*if(widget._cinemaIndex.isEmpty){
+      setState(){
+          widget._cinemaIndex;
+      };
+      return Container(
+        child: Column(
+          children:[Text("loading...",style: TextStyle(
+            color: Colors.white,
+          ),),
+        ]
+        )
+      );
+    }*/
+/*    return StreamBuilder<QuerySnapshot>(
+      stream: _cinemaStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+        return new ListView(
+          children: snapshot.data.docs.map((DocumentSnapshot document) {
+            return new ListTile(
+              title: new Text(document.data()['cinemaName'],style: TextStyle(color: Colors.grey, fontSize: 14),
+                  textAlign: TextAlign.left),
+              subtitle: new Text(document.data()['cinemaImage'],style: TextStyle(color: Colors.grey, fontSize: 14),
+                  textAlign: TextAlign.left),
+            );
+          }).toList(),
+        );
+      },
+    );*/
+
+    return Container(
+     // height: size.width*0.3,
+      child:Column(
 
         children:
-        List.generate(_cinemaIndex.length, (index) {
-          if(_cinemaIndex[index].cinemaCity.contains(cinemaCityFilter) ) {
-
+        List.generate(widget._cinemaIndex.length, (index) {
+          if(widget._cinemaIndex[index].cinemaCity.contains(widget.cinemaCityFilter) ) {
+          //  print("hehe" + _cinemaIndex[index].cinemaName);
             return Center(
+
               // ignore: missing_return
-              child: _cinemaIndex[index],
+              child: Container(
+                //height: size.height*0.3,
+                child:widget._cinemaIndex[index],
+              )
             );
           }
           else return Container();
 
           }
         )
-    );
+    ));
   }
 }
 
@@ -362,7 +499,6 @@ class MyInheritedWidget extends InheritedWidget {
   bool updateShouldNotify(MyInheritedWidget oldWidget) =>
       secondsToDisplay != oldWidget.secondsToDisplay;
 }
-
 
 
 

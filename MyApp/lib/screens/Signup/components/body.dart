@@ -88,9 +88,10 @@ class _Body extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(height: 40,),
             Text(
               "SIGNUP",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
 

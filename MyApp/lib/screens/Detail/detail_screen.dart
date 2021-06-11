@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_app/models/movie_model.dart';
 import 'package:movie_ticket_app/constants.dart';
+import 'package:movie_ticket_app/screens/CinemaDetail/component/movie_index.dart';
 
 
 class DetailMoviePage extends StatefulWidget {
 
-  DetailMoviePage();
+  MovieIndex movie;
+
+
+
+  DetailMoviePage(this.movie);
+
   @override
   _DetailMoviePageState createState() => _DetailMoviePageState();
 }
@@ -18,7 +24,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-         " widget.movie.title,",
+         widget.movie.movieName,
           style: TextStyle(
             color: white,
             fontSize: 22,
@@ -41,9 +47,10 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
             Container(
               height: 500,
               width: MediaQuery.of(context).size.width,
+              color: Colors.red,
 
-              child: Container(
-                decoration: BoxDecoration(
+              child: Stack(
+                /*decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
                       secondaryColor,
@@ -54,24 +61,35 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                   ),
-                ),
-                child: Padding(
+                ),*/
+
+                children: [
+                  Image.asset(
+                    widget.movie.movieImage,
+                    height: double.infinity,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                   // fit: BoxFit.fitHeight,
+                  ),
+                  Padding(
                   padding: EdgeInsets.only(left: 15, bottom: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "widget.movie.title",
+                        widget.movie.movieName,
                         style: TextStyle(
                           color: white,
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
+
+
                         ),
                       ),
                       SizedBox(height: 5),
                       Text(
-                        "time",
+                        widget.movie.movieLength,
                         style: TextStyle(
                           color: white.withOpacity(0.7),
                           fontSize: 17,
@@ -82,12 +100,13 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                       Row(
                         children: [
                           Text(
-                            "rate",
+                            widget.movie.movieRating.toString(),
                             style: TextStyle(
                               color: Colors.yellow,
                               fontSize: 17,
                             ),
                           ),
+                          Icon(Icons.star,color: Colors.yellow,),
                           SizedBox(width: 5),
 
 
@@ -95,7 +114,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                       )
                     ],
                   ),
-                ),
+                ),]
               ),
             ),
             Padding(
@@ -112,7 +131,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 10),
               child: Text(
-                "storyLine",
+                widget.movie.movieOverview,
                 style: TextStyle(
                   color: white.withOpacity(0.7),
                   fontSize: 17,

@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_app/components/bottomNavbar.dart';
+import 'package:movie_ticket_app/firebase/getCinemas.dart';
+import 'package:movie_ticket_app/full_map.dart';
 import 'package:movie_ticket_app/routes.dart';
+import 'package:movie_ticket_app/screens/CinemaDetail/component/simpleDirection.dart';
 import 'package:movie_ticket_app/screens/Detail/detail_screen.dart';
 import 'package:movie_ticket_app/screens/HomePage/home_page.dart';
 import 'package:movie_ticket_app/screens/Login/login_screen.dart';
+import 'package:movie_ticket_app/screens/Payment/payment_screen.dart';
 import 'package:movie_ticket_app/screens/buy_tickets_screen.dart';
+import 'package:movie_ticket_app/screens/showtimes/component/test.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_ticket_app/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wemapgl/wemapgl.dart' ;
+import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:wemapgl/wemapgl.dart' as WEMAP;
+//import 'package:movie_ticket_app/full_map.dart';
+
+
 
 void main() async {
   WEMAP.Configuration.setWeMapKey('GqfwrZUEfxbwbnQUhtBMFivEysYIxelQ');
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
+
+  //runApp(PaymentScreen());
+ // runApp(MaterialApp(home: SimpleDirectionPage()));
+
  // runApp(App());
 }
 

@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -17,6 +17,36 @@ dependencies:
   weather_icons: ^2.0.2
   connectivity: ^3.0.3
   fluttertoast: ^8.0.6
+
+#plugin cua huy
+  http: ^0.13.2
+  #flutter_signin_button: ^2.0.0
+  #flutter_facebook_login: ^3.0.0
+  google_sign_in: ^4.5.9
+
+  #flutter_facebook_auth: "^1.0.0"
+  scroll_snap_list: ^0.4.1
+  rubber: ^1.0.0
+  line_awesome_flutter: ^1.0.1
+  flutter_screenutil: ^1.0.2
+
+
+
+
+  animated_theme_switcher: ^1.0.5
+  flutter_svg: ^0.19.1
+  flutter_layouts: ^0.0.2
+
+  sticky_headers: ^0.2.0
+  flutter_datetime_picker: ^1.5.1
+  select_form_field: ^2.0.0
+
+  firebase_core: ^1.2.1
+  cloud_firestore: ^1.0.0 # new
+  firebase_auth: ^1.0.0   # new
+  provider: ^5.0.0
+
+
 
 
 dev_dependencies:

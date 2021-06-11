@@ -29,7 +29,7 @@ class Body extends StatelessWidget {
           children: <Widget>[
             Text(
               "LOGIN",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
 

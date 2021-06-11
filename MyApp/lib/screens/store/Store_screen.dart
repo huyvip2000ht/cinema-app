@@ -104,7 +104,7 @@ class _StoreScreenState extends State<StoreScreen>{
                 Container(
                   child: Row(
                     children: [
-                      SquareButton(
+/*                      SquareButton(
                         text: "Togo",
                         color: _hasBeenPressed[0] ? Colors.lightGreen : Colors
                             .black,
@@ -155,7 +155,7 @@ class _StoreScreenState extends State<StoreScreen>{
                           })
                         },
                         width: size.width * 0.25,
-                      ),
+                      ),*/
                     ],
                   )
                 ),

@@ -20,8 +20,8 @@ class MovieData {
           director: 'Ericson Core',
           storyLine:
           'Togo (1913 – December 5, 1929) was the lead sled dog of Leonhard Seppala and his dog sled team in the 1925 serum run to Nome across central and northern Alaska. Even though he covered more distance (260 miles) than his co-sledder Balto (55 miles), he didn\'t get as much fame.',
-          image: Image.asset("E:\Hoc tap\Thương mại điện tử\movie-ticket-app\assets\image"),
-          imageLogo: Image.asset("E:\Hoc tap\Thương mại điện tử\movie-ticket-app\assets\image"),
+          image: Image.asset("assets/image/togo.jpeg"),
+          imageLogo: Image.asset("assets/image/togologo.jpeg"),
           castList: [
             MovieCastModel(
               name: "Willem Dafoe",

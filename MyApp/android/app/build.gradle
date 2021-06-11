@@ -39,6 +39,12 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // TODO: Nhớ sửa lại cái này
+            // abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            abiFilters "x86"
+        }
     }
 
     buildTypes {
@@ -55,6 +61,7 @@ flutter {
 }
 
 dependencies {
+ /*   implementation 'com.github.WEMAP-Project:WeMap-Android-SDK:1.5.0'*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
