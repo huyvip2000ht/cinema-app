@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_app/constants.dart';
 import 'package:movie_ticket_app/components/bottomNavbar.dart';
@@ -5,6 +6,7 @@ import 'package:movie_ticket_app/components/rounded_button.dart';
 import 'package:movie_ticket_app/components/rounded_select_field.dart';
 import 'package:movie_ticket_app/components/square_button.dart';
 import 'package:movie_ticket_app/components/text_field_container.dart';
+import 'package:movie_ticket_app/screens/CinemaDetail/component/movie_index.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/background_list_view.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/custom_appbar.dart';
 import 'package:movie_ticket_app/screens/HomePage/components/movie_list_view.dart';
@@ -20,24 +22,25 @@ class StoreScreen extends StatefulWidget{
 }
 
 class _StoreScreenState extends State<StoreScreen>{
+  CollectionReference cinemas = FirebaseFirestore.instance.collection('cinemas');
+
   int _seconds = 1;
   String _filmFilter = "";
+  List<MovieIndex> _movieIndex=[];
+  bool _isLoaded = false;
+
+
   List<bool> _hasBeenPressed = [
     false, false, false
   ];
-  List<FilmIndex> _filmIndex = <FilmIndex>[
-    FilmIndex("Togo", 8.5, "assets/image/image.jpg", "abcd"),
-    FilmIndex("Togo", 8.5, "assets/image/image.jpg", "abcd"),
-    FilmIndex("Joker", 8.5, "assets/image/image.jpg", "abcd"),
-    FilmIndex("Joker", 8.5, "assets/image/image.jpg", "abcd"),
-    FilmIndex("Planet of the Apes", 8.5, "assets/image/image.jpg", "abcd"),
-    FilmIndex("Planet of the Apes", 8.5, "assets/image/image.jpg", "abcd"),
-  ];
+
   @override
   Widget build(BuildContext context){
     Size size = MediaQuery
         .of(context)
         .size;
+
+    takeData();
     return new MyInheritedWidget(
         secondsToDisplay: _seconds,
         child: Scaffold(
@@ -101,72 +104,23 @@ class _StoreScreenState extends State<StoreScreen>{
                     ),
                   )
                 ),
-                Container(
-                  child: Row(
-                    children: [
-/*                      SquareButton(
-                        text: "Togo",
-                        color: _hasBeenPressed[0] ? Colors.lightGreen : Colors
-                            .black,
-                        press: () =>
-                        {
-                          setState(() {
-                            for(var i=0;i<_hasBeenPressed.length;i++){
-                              _hasBeenPressed[i]=false;
-                            }
-                            _hasBeenPressed[0] = true;
-                            print(_hasBeenPressed.toString());
 
-                            _addPressed("Togo");
-                          })
-                        },
-                        width: size.width * 0.3,
-                      ),
-                      SquareButton(
-                        text: "Joker",
-                        color: _hasBeenPressed[1] ? Colors.lightGreen : Colors
-                            .black,
-                        press: () =>
-                        {
-                          setState(() {
-                            for(var i=0;i<_hasBeenPressed.length;i++){
-                              _hasBeenPressed[i]=false;
-                            }
-                            _hasBeenPressed[1] = true;
-                            print(_hasBeenPressed.toString());
-                            _addPressed("Joker");
-                          })
-                        },
-                        width: size.width * 0.3,
-                      ),
-                      SquareButton(
-                        text: "Planet of the Apes",
-                        color: _hasBeenPressed[2] ? Colors.lightGreen : Colors
-                            .black,
-                        press: () =>
-                        {
-                          setState(() {
-                            for(var i=0;i<_hasBeenPressed.length;i++){
-                              _hasBeenPressed[i]=false;
-                            }
-                            _hasBeenPressed[2] = true;
-                            print(_hasBeenPressed.toString());
-                            _addPressed("Planet of the Apes");
-                          })
-                        },
-                        width: size.width * 0.25,
-                      ),*/
-                    ],
-                  )
-                ),
+              Container(
+                width: size.height*0.65,
 
-                Container(
-                    height: size.height * 0.65,
-                    child: SingleChildScrollView(
-                        child:
-                        MyList(_filmIndex,_filmFilter)
-                    )
-                )
+
+                  child: Column(
+                        children: [
+                          SingleChildScrollView(
+
+                            child:ListMovie(_movieIndex),
+
+                          )
+                      ]),
+
+              )
+
+
               ]
             ),
           ),
@@ -178,6 +132,32 @@ class _StoreScreenState extends State<StoreScreen>{
     setState(() {
       _filmFilter = filter;
     });
+  }
+  Future<void> takeData() async {
+
+    var collectionMovies= FirebaseFirestore.instance.collection('movies');
+    var querySnapshotMovies = await collectionMovies.get();
+
+    if(_isLoaded == false){
+      setState(() {
+
+        for (var doc in querySnapshotMovies.docs) {
+          Map<String, dynamic> data = doc.data();
+
+          _movieIndex.add(new MovieIndex(doc.id,data['movieName'], data['movieCategory'], data['movieImage'],
+              data['movieLength'], data['movieShowtime'], data['movieOverview'],data['movieRating']));
+
+
+          print(doc.id);
+          //  var fooValue = data['cinemaImage'];
+        }
+
+
+
+
+        _isLoaded = true;
+      });
+    }
   }
 }
 
@@ -287,37 +267,35 @@ Widget _buildDrawer() {
   );
 }
 
-class MyList extends StatelessWidget{
-  List<FilmIndex> _filmIndex;
-  String filmFilter;
-  MyList(this._filmIndex, this.filmFilter);
-  @override
-  Widget build(BuildContext context){
-    final MyInheritedWidget inheritedWidget = MyInheritedWidget.of(context);
 
-    return Column(
-      children:
-        List.generate(_filmIndex.length, (index){
-          if(_filmIndex[index].filmName.contains(filmFilter)){
-            return Center(
-              child: _filmIndex[index],
-            );
-          }
-          else return Container();
-          }
-        )
-    );
-  }
-}
+class ListMovie extends StatelessWidget{
+  List<MovieIndex> _movieIndex;
+  ListMovie(this._movieIndex);
 
-class MyTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print(_movieIndex[0].movieName);
+    Size size = MediaQuery
+        .of(context)
+        .size;
     final MyInheritedWidget inheritedWidget = MyInheritedWidget.of(context);
-    return Text(inheritedWidget.secondsToDisplay.toString(),
-      textScaleFactor: 5.0,
+
+    return Container(
+        child:Column(
+            children:
+            List.generate(_movieIndex.length, (index) {
+              return Center(
+                  child: Container(
+                    child:_movieIndex[index],
+                  )
+              );
+            }
+            )
+        )
     );
+
   }
+
 }
 
 class MyInheritedWidget extends InheritedWidget {

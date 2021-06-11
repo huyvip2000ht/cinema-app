@@ -24,11 +24,7 @@ class Body extends StatefulWidget {
 }
 class _BodyState extends State<Body>{
   CollectionReference cinemas = FirebaseFirestore.instance.collection('cinemas');
-/*  double _fakeLocationX = 105.810697;
-  double _fakeLocationY = 21.023506;
-  double _cinemaX = 105.776147;
-  double _cinemaY = 21.013668;
-  String _cinemaId;*/
+
 
   bool _isLoaded = false;
 
@@ -40,20 +36,7 @@ class _BodyState extends State<Body>{
   String _whatToShow="" ;
 
 
-/*  CinemaIndex cinema = CinemaIndex("id_bla_bla","BHD Star The Garden",
-  "Tầng 4 & 5,TTTM The Garden, khu đô thị The Manor,đường Mễ trì, phường Mỹ Đình 1, quận Nam Từ Liêm,Hà Nội"
-  ,"assets/image/image.jpg"
-  ,"HN",105.776147, 21.013668,105.810697,21.023506);*/
 
-  //CinemaIndex cinema = CinemaIndex("","","","","",0,0,0,0);
-
-  //CinemaIndex cinema = widget._cinemaIndex;
-
-
-/*
-  List<MovieIndex> _movieIndex = <MovieIndex>[
-    MovieIndex("Joker", "Kinh di, Tâm lí", "assets/image/image.jpg", "120", "12h-14h, 15h-17h","cascu sasdjadndasv  sdasdas sad asd"),
-  ];*/
 
   List<MovieIndex> _movieIndex=[];
 
@@ -161,7 +144,7 @@ class _BodyState extends State<Body>{
                   DistanceTimeEstimate(cinema.distance,widget._fakeLocationX,widget._fakeLocationY,cinema.cinemaX,cinema.cinemaY),
 
 
-                  Container(
+                  Container(/**/
                       child: Row(
                         children: [
                           SquareButton(
@@ -205,14 +188,7 @@ class _BodyState extends State<Body>{
                       )
                   ),
                   ShowPage(_whatToShow,_movieIndex,widget._fakeLocationX,widget._fakeLocationY,cinema.cinemaX,cinema.cinemaY),
-                  /*Container(
-                      height: size.height * 0.59,
-                      child: SingleChildScrollView(
-                          child:
-                          ListMovie(_movieIndex),
-                         // MyList(_cinemaIndex,_cinemaFilter)
-                      )
-                  )*/
+
                 ]
             ),
           ),
@@ -277,6 +253,7 @@ class ShowPage extends StatelessWidget{
   double _cinemaX;
   double _cinemaY;
    ShowPage(this._whatToShow,this._movieIndex,this._fakeX,this._fakeY,this._cinemaX,this._cinemaY);
+
 
 
   @override
